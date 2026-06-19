@@ -1,5 +1,8 @@
 const express = require('express');
 
+const userRouter = require('./routes/userRouter');
+const hostRouter = require('./routes/hostRouter');
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -7,33 +10,12 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use(express.urlencoded())
+app.use(express.urlencoded());
+app.use(userRouter);
+app.use("/host", hostRouter);
 
-app.get("/", (req, res, next) => {
-    res.send(`
-        <h1>Welcome to airbnb</h1>
-        <a href="add-home">Add home</a>
-        `);
-    next();
-})
-
-app.get("/add-home", (req, res, next) => {
-    res.send(`
-        <h1>Register your home here</h1>
-        <form action="add-home" method="POST">
-            <input type="text" name="houseName"
-            placeholder="Enter house name" />
-            <input type="submit" />
-        </form>
-        `);
-})
-
-app.post("/add-home", (req, res, next) => {
-    console.log(req.body);
-    res.send(`
-        <h1>Home registered successfully</h1>
-        <a href="/">Go to home</a>
-        `);
+app.use((req, res, next) => {
+    res.status(404).send("<h1>Page not found</h1>")
 })
 
 app.listen(3000, () => {
