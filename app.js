@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 
 const userRouter = require('./routes/userRouter');
 const hostRouter = require('./routes/hostRouter');
@@ -15,7 +16,7 @@ app.use(userRouter);
 app.use("/host", hostRouter);
 
 app.use((req, res, next) => {
-    res.status(404).send("<h1>Page not found</h1>")
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 })
 
 app.listen(3000, () => {
